@@ -11,7 +11,7 @@ const notFoundElement = document.querySelector('.movies__not-found'); // нем�
 let debounseTime; // змінна для створення затримки між натисканням клавішами
 
 // функція запиту даних з API
-const getData = key => fetch(`http://www.omdbapi.com/?apikey=${apiKey}&s=${key}&y=${year.value}`)
+const getData = key => fetch(`https://www.omdbapi.com/?apikey=${apiKey}&s=${key}&y=${year.value}`)
   .then(data => data.json())
   .then(data => data.Search)
   .catch(err => console.log(err));
