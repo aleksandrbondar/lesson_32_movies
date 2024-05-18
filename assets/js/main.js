@@ -1,4 +1,4 @@
-const apiKey = '60e7f576'; // API
+const apiKey = '60e7f576';
 const noPoster = 'https://www.movienewsletters.net/photos/000000H1.jpg';
 
 const moviesBox = document.querySelector('.movies');
@@ -18,28 +18,22 @@ const getData = key => fetch(`http://www.omdbapi.com/?apikey=${apiKey}&s=${key}&
 function searchMovies() {
   debounseTime = Date.now();
   setTimeout(() => {
-    if (Date.now() - debounseTime > 1000 && search.value.length > 2) {
+    if (Date.now() - debounseTime > 1000 && search.value.length >= 3) {
       animationMovies();
       addMovies();
       notFoundMovies();
     };
-    if (search.value.length < 3 && search.value.length > 0) {
-      animationMovies();
-      notFoundMovies();
-    };
-    if (search.value.length === 0) {
+    if (search.value.length < 3) {
       animationMovies();
       notFoundMoviesHide();
-    }
+    };
   }, 1000);
 };
 
 function addMovies() {
-  if (search.value !== '') {
-    notFoundMoviesHide();
-    const key = search.value.replace(/ /g, '+').toLowerCase();
-    getData(key).then(createMovieElements);
-  }
+  notFoundMoviesHide();
+  const key = search.value.trim().replace(/ /g, '+').toLowerCase();
+  getData(key).then(createMovieElements);
 }
 
 function animationMovies() {
@@ -61,9 +55,10 @@ function deleteMovie(movie) {
 }
 
 function createMovieElements(data) {
+  console.log(data)
   data?.forEach(element => {
     const movie = createElement(element);
-    moviesBox.append(movie);
+    moviesBox.prepend(movie);
   });
   animationMovies();
 }
@@ -74,9 +69,9 @@ function createElement(element) {
   movie.classList.add('movie', 'movie--hide');
   movie.innerHTML = `
   <h3 class="movie__title">${element.Title}</h3>
-  <p class="movie__year">Year: ${element.Year}</p>
+  <p class="movie__info">Year: ${element.Year}. Type: ${element.Type}</p>
   <img class="movie__poster" src="${element.Poster === 'N/A' ? noPoster : element.Poster}" alt="Poster of ${element.Title}">
-  <p>ID: <span class="movie__id">${element.imdbID}</span></p>`;
+  <p class="movie__id">ID: <span class="element__id">${element.imdbID}</span></p>`;
   return movie
 }
 
@@ -103,7 +98,7 @@ function openMovie(event) {
   const isMovie = event.target.classList.contains('movie') ? true : event.target.parentElement.classList.contains('movie');
   if (isMovie) {
     const clickElement = event.target.classList.contains('movie') ? event.target : event.target.parentElement;
-    const movieId = clickElement.querySelector('.movie__id').textContent;
+    const movieId = clickElement.querySelector('.element__id').textContent;
     window.open(`https://www.imdb.com/title/${movieId}`, '_blank');
   }
 }
