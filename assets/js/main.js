@@ -1,41 +1,45 @@
-const apiKey = '60e7f576';
-const noPoster = 'https://www.movienewsletters.net/photos/000000H1.jpg';
+const apiKey = '60e7f576'; // API ключ
+const noPoster = 'https://www.movienewsletters.net/photos/000000H1.jpg'; // посилання на зображення без постеру
 
-const moviesBox = document.querySelector('.movies');
-const moviesList = document.getElementsByClassName('movie');
-const search = document.getElementById('search');
-const year = document.getElementById('year');
-const searchBtn = document.getElementById('search-btn');
-const resetBtn = document.getElementById('reset-btn');
-const notFoundElement = document.querySelector('.movies__not-found');
-let debounseTime;
+const moviesBox = document.querySelector('.movies'); // контейнер з фильмами
+const moviesList = document.getElementsByClassName('movie'); // всі фильми
+const search = document.getElementById('search'); // пошук
+const year = document.getElementById('year'); // рік
+const searchBtn = document.getElementById('search-btn'); // пошук
+const resetBtn = document.getElementById('reset-btn'); // скидує пошук
+const notFoundElement = document.querySelector('.movies__not-found'); // немає фільмів
+let debounseTime; // змінна для створення затримки між натисканням клавішами
 
+// функція запиту даних з API
 const getData = key => fetch(`http://www.omdbapi.com/?apikey=${apiKey}&s=${key}&y=${year.value}`)
   .then(data => data.json())
   .then(data => data.Search)
   .catch(err => console.log(err));
 
+// функція пошуку фільмів
 function searchMovies() {
   debounseTime = Date.now();
   setTimeout(() => {
     if (Date.now() - debounseTime > 1000 && search.value.length >= 3) {
-      animationMovies();
-      addMovies();
-      notFoundMovies();
+      animationMovies(); // анімація
+      addMovies(); // додавання
+      notFoundMovies(); // якщо немає фільмів
     };
     if (search.value.length < 3) {
-      animationMovies();
-      notFoundMoviesHide();
+      animationMovies(); // анімація
+      notFoundMoviesHide(); // якщо немає фільмів, прибрати елемент
     };
-  }, 1000);
+  }, 1000); // час анімації
 };
 
+// функція додавання фільмів
 function addMovies() {
   notFoundMoviesHide();
   const key = search.value.trim().replace(/ /g, '+').toLowerCase();
   getData(key).then(createMovieElements);
 }
 
+// функція анімації
 function animationMovies() {
   const moviesList = document.querySelectorAll('.movie');
   moviesList.forEach((movie, index) => {
@@ -48,12 +52,14 @@ function animationMovies() {
   })
 };
 
+// функція видалення елементів
 function deleteMovie(movie) {
   if (movie.classList.contains('movie--hide')) {
     movie.addEventListener('transitionend', () => movie.remove());
   }
 }
 
+// функція створення массиву елементів
 function createMovieElements(data) {
   console.log(data)
   data?.forEach(element => {
@@ -64,6 +70,7 @@ function createMovieElements(data) {
 }
 
 
+// функція створення елементу
 function createElement(element) {
   const movie = document.createElement('div');
   movie.classList.add('movie', 'movie--hide');
@@ -75,13 +82,14 @@ function createElement(element) {
   return movie
 }
 
+// функція скидує пошук
 function resetMovies() {
   search.value = '';
   year.value = '';
   animationMovies();
 }
 
-
+// функція якщо немає фільмів, додає оповіщення
 function notFoundMovies() {
   setTimeout(() => {
     if (moviesList.length === 0) {
@@ -90,10 +98,12 @@ function notFoundMovies() {
   }, 1500);
 }
 
+// функція приховування оповіщення
 function notFoundMoviesHide() {
   notFoundElement.classList.remove('movies__not-found--show');
 }
 
+// функція відкриття фільму на іншому сайті
 function openMovie(event) {
   const isMovie = event.target.classList.contains('movie') ? true : event.target.parentElement.classList.contains('movie');
   if (isMovie) {
@@ -103,6 +113,7 @@ function openMovie(event) {
   }
 }
 
+// функція ініціалізації прослуговування
 function init() {
   search.addEventListener('keyup', searchMovies);
   year.addEventListener('keyup', searchMovies);
@@ -111,4 +122,5 @@ function init() {
   moviesBox.addEventListener('click', e => openMovie(e));
 }
 
+// ініціалізація
 init()
