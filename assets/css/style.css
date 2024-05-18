@@ -71,6 +71,21 @@ body {
   transition: border-color 0.3s;
 }
 
+.search__input[type='number']::-webkit-inner-spin-button,
+.search__input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.search__input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.search__input[type='number'] {
+  appearance: textfield;
+}
+
 .search__input:focus {
   border-color: #007BFF;
   outline: none;
