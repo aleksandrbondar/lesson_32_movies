@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <title>Cool Title</title>
+</head>
+
+<body>
+  <div class="container">
+    <header class="header">
+      <h1 class="title">Search films plugin</h1>
+      <div class="search">
+        <div class="search__group-input">
+          <label class="search__label" for="search">Title:</label>
+          <input class="search__input" id="search" type="text" placeholder="Search...">
+        </div>
+
+        <div class="search__group-year">
+          <label class="search__label" for="year">Year:</label>
+          <input class="search__input" id="year" type="number" min="1900" max="2024">
+        </div>
+
+        <div class="search__group-btn">
+          <button class="search__btn" type="submit" id="search-btn">Search</button>
+          <button class="search__btn" type="reset" id="reset-btn">Reset</button>
+        </div>
+      </div>
+    </header>
+
+
+    <div class="movies">
+      <span class="movies__not-found">Not Found any movies</span>
+    </div>
+
+  </div>
+  <script src="assets/js/main.js"></script>
+</body>
+
+</html>
